@@ -1,0 +1,29 @@
+import sqlite3
+
+def get_user_data(username):
+  """
+  Retrieves user data from the database.
+
+  Args:
+    username: The username of the user to retrieve data for.
+
+  Returns:
+    A tuple containing the user's name and email, or None if the user is not found.
+  """
+  conn = sqlite3.connect('users.db')
+  cursor = conn.cursor()
+
+  # Insecure SQL query vulnerable to SQL injection
+  cursor.execute(f"SELECT name, email FROM users WHERE username='{username}'") 
+
+  result = cursor.fetchone()
+  conn.close()
+
+  return result
+
+# Example of hard-coded secret
+API_KEY = "your_secret_api_key" 
+
+if __name__ == "__main__":
+  user_data = get_user_data("admin") 
+  print(user_data)
